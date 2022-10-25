@@ -110,29 +110,45 @@ class Block{
     void Change_dir(){
 
     }
-    void Draw(int i){
+    void Draw(int i,int r){
         for(int j=0;j<=3;j++){
             cout<<shape[i][j];
         }
     }
+    void Accomplished(vector<vector<int>> &mp){
+        int q=0,p=0;
+        for(int i=Bottom;i>=Bottom-3;i--){
+            for(int j=Right-3;j<=Right;j++){
+                if(shape[p][q] == 1)mp[i][j]=1;
+                q++;
+            }
+        p++;
+        }
+    }
+    ~Block(){
+        delete shape;
+    };
 };
 
-
-
+void gotoxy(int x, int y) {
+	COORD pos = {x,y};
+	HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleCursorPosition(hOut, pos);
+}
 
 
 int main(){
     int key=0;
-    vector<vector<int>> Mapp(row,vector<int>(col,0)); 
+    vector<vector<int>> Mapp(row,vector<int>(col,0));
+    vector<Block> blocks; 
     srand(time(nullptr));
-    Block block_test(rand()%7,0);
+    while(true)
     while(true){
-        cout<<"-------------------------------------------"<<endl;
         int cnt=0;
         for(int i=0; i<row; i++){
             for(int j=0; j<col; j++){
-                if(i >= block_test.Bottom-3 && i <= block_test.Bottom && j == block_test.Right-3){
-                    block_test.Draw(cnt);
+                if(i >= block_test.Bottom-3 && i <= block_test.Bottom && j == block_test.Right-3 && block_test.Bottom-block_test.LowSpace(block_test.shape)+1<row){
+                    block_test.Draw(cnt,col);
                     cnt++;
                     j+=3;
                 }
@@ -156,11 +172,20 @@ int main(){
                 case 'w':
                     block_test.Change_dir();
                     break;
+                case 27:
+                    return 0;
             }
-        }
-        
+        }  
         block_test.Fall_Down(1);
-        Sleep(500);
+        if(block_test.Bottom-(4-block_test.LowSpace(block_test.shape))==row){
+            block_test.Accomplished(Mapp);
+            Block *p = &block_test;
+            delete p ;
+            p = nullptr;
+            Block block_test(rand()%7,0);
+        }
+        Sleep(1000);
+        system("cls");
     }
     return 0;
 }
