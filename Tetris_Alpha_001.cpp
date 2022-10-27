@@ -3,6 +3,9 @@
 /*
 1.面向对象的程度？
 2.亟需沟通与协作 (●'◡'●)
+3.卡顿、频闪严重
+4. “失败”未实现
+5.下落和左右要不用同时
 */
 
 
@@ -24,7 +27,7 @@ using namespace std;
 #define shape_R_Z 5
 #define shape_R_L 6
 
-int row=16,col=15;  //长row宽col
+int row=40,col=20;  //长row宽col
 
 
 class Block{  //方块类
@@ -40,40 +43,40 @@ class Block{  //方块类
                 yx.push_back(make_pair(0,5));
             break;
             case shape_R_L:
-                yx.push_back(make_pair(0,1));
-                yx.push_back(make_pair(1,1));
-                yx.push_back(make_pair(2,1));
-                yx.push_back(make_pair(2,0));
+                yx.push_back(make_pair(0,4));
+                yx.push_back(make_pair(1,4));
+                yx.push_back(make_pair(2,4));
+                yx.push_back(make_pair(2,3));
             break;
             case shape_L:
-                yx.push_back(make_pair(0,0));
-                yx.push_back(make_pair(1,0));
-                yx.push_back(make_pair(2,0));
-                yx.push_back(make_pair(2,1));
+                yx.push_back(make_pair(0,3));
+                yx.push_back(make_pair(1,3));
+                yx.push_back(make_pair(2,3));
+                yx.push_back(make_pair(2,4));
             break;
             case shape_I:
-                yx.push_back(make_pair(0,0));
-                yx.push_back(make_pair(1,0));
-                yx.push_back(make_pair(2,0));
-                yx.push_back(make_pair(3,0));
+                yx.push_back(make_pair(0,3));
+                yx.push_back(make_pair(1,3));
+                yx.push_back(make_pair(2,3));
+                yx.push_back(make_pair(3,3));
             break;
             case shape_Z:
-                yx.push_back(make_pair(0,0));
-                yx.push_back(make_pair(0,1));
-                yx.push_back(make_pair(1,1));
-                yx.push_back(make_pair(1,2));
+                yx.push_back(make_pair(0,3));
+                yx.push_back(make_pair(0,4));
+                yx.push_back(make_pair(1,4));
+                yx.push_back(make_pair(1,5));
             break;
             case shape_O:
-                yx.push_back(make_pair(0,0));
-                yx.push_back(make_pair(0,1));
-                yx.push_back(make_pair(1,0));
-                yx.push_back(make_pair(1,1));
+                yx.push_back(make_pair(0,3));
+                yx.push_back(make_pair(0,4));
+                yx.push_back(make_pair(1,3));
+                yx.push_back(make_pair(1,4));
             break;
             case shape_T:
-                yx.push_back(make_pair(0,0));
-                yx.push_back(make_pair(0,1));
-                yx.push_back(make_pair(0,2));
-                yx.push_back(make_pair(1,1));
+                yx.push_back(make_pair(0,3));
+                yx.push_back(make_pair(0,4));
+                yx.push_back(make_pair(0,5));
+                yx.push_back(make_pair(1,4));
             break;
 
         }
