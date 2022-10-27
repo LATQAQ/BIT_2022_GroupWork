@@ -2,11 +2,10 @@
 
 /*
 1.消除功能未完成
-2.运动方块 与 已固定方块 产生冲突，未解决
-3.旋转方向未实现
-4.面向对象的程度？
-5.右侧出框问题未解决
-6.亟需沟通与协作 (●'◡'●)
+2.旋转方向未实现
+3.面向对象的程度？
+4.右侧出框问题未解决
+5.亟需沟通与协作 (●'◡'●)
 */
 
 
@@ -28,7 +27,7 @@ using namespace std;
 #define shape_R_Z 5
 #define shape_R_L 6
 
-int row=30,col=15;  //长row宽col
+int row=15,col=15;  //长row宽col
 
 
 class Block{  //方块类
@@ -114,8 +113,14 @@ class Block{  //方块类
         }
     }
     //向下掉落speed个格
-    void Fall_Down(int speed){ 
-        if(Bottom-(3-LowSpace(shape)) + speed < row)
+    void Fall_Down(int speed,vector<vector<int>> &mp){
+        bool flag = true;
+        for(int i=0;i<=3;i++){
+            if(Bottom-(3-LowSpace(shape)) + speed<row)
+            if(mp[Bottom-(3-LowSpace(shape)) + speed][Right+i-3] == 1)
+            flag = false;
+        } 
+        if(Bottom-(3-LowSpace(shape)) + speed < row && flag)
         Bottom+=speed;
     }
     //向左1格
@@ -132,10 +137,17 @@ class Block{  //方块类
     void Change_dir(){
 
     }
-    //打印出形状
-    void Draw(int i,int r){
-        for(int j=0;j<=3;j++){
-            cout<<shape[i][j];
+    //打印地图和方块
+    void Draw(vector<vector<int>> &mp){   
+        for(int i=0; i<row; i++){
+            for(int j=0; j<col; j++){
+                if(i >= Bottom-3 && i <= Bottom && j >= Right-3 && j <= Right && Bottom-(3-LowSpace(shape))-1<row){
+                    if(shape[i+3-Bottom][j+3-Right] == 1)cout<<1;
+                    else cout<<mp[i][j];
+                }
+                else cout<<mp[i][j];
+            }
+            cout<<endl;
         }
     }
     //在Mapp上固定这个方块
@@ -152,7 +164,7 @@ class Block{  //方块类
     }
     //找到方块最下方的接触点
     vector<vector<int>> TouchPoint(){
-        vector<vector<int>> arr(4,vector<int>(2,-1));
+        vector<vector<int>> arr(6,vector<int>(2,-1));
         int cnt=0;
         for(int i=3;i>=0;i--){
             for(int j=0;j<=3;j++){
@@ -161,7 +173,7 @@ class Block{  //方块类
                     arr[cnt][1]=j;
                     cnt++;
                 }
-                else if(i!=3 && shape[i][j]==1 && shape[i][j+1]==0){
+                else if(i!=3 && shape[i][j]==1 && shape[i+1][j]==0){
                     arr[cnt][0]=i;
                     arr[cnt][1]=j;
                     cnt++;
@@ -176,11 +188,18 @@ class Block{  //方块类
         bool flag = true;
         for(auto i:arr){
             if(i[0]!=-1)
-                if(mp[Bottom-(3-i[0])+1][Right-3+i[1]] == 1){
-                    flag = false;
-                }
+            if(mp[Bottom-(3-i[0])+1][Right-3+i[1]] == 1){
+                flag = false;
+            }
         }
         return flag;
+    }
+    bool ifEnd(vector<vector<int>> &mp){
+        if(Bottom-(3-LowSpace(shape))==row-1 || Touch(mp) == false){  
+            Accomplished(mp);
+            return false;
+        }
+        else return true;
     }
     //析构方块
     ~Block(){
@@ -202,24 +221,9 @@ int main(){
         blocks.push_back(block1);
         while(flag){
             //判断是否触底或接触已固定方块
-            if(blocks[tt].Bottom-(3-blocks[tt].LowSpace(blocks[tt].shape))==row-1 || blocks[tt].Touch(Mapp) == false){  
-                blocks[tt].Accomplished(Mapp);
-                flag = false;
-                break;
-            }
+            flag = blocks[tt].ifEnd(Mapp);
             system("cls");  //清除屏幕，以实现整个画面的固定
-            int cnt=0;    //打印地图和方块
-            for(int i=0; i<row; i++){
-                for(int j=0; j<col; j++){
-                    if(i >= blocks[tt].Bottom-3 && i <= blocks[tt].Bottom && j == blocks[tt].Right-3 && blocks[tt].Bottom-(3-blocks[tt].LowSpace(blocks[tt].shape))-1<row){
-                        blocks[tt].Draw(cnt,col);
-                        cnt++;
-                        j+=3;
-                    }
-                    else cout<<Mapp[i][j];
-                }
-                cout<<endl;
-            }
+            blocks[tt].Draw(Mapp);
             //接收键盘输入
             if(_kbhit()){
                 key = _getch();
@@ -232,7 +236,7 @@ int main(){
                         blocks[tt].Go_Right();
                         break;
                     case 's':
-                        blocks[tt].Fall_Down(3);
+                        blocks[tt].Fall_Down(3,Mapp);
                         break;
                     case 'w':
                         blocks[tt].Change_dir();
@@ -241,7 +245,7 @@ int main(){
                         return 0;
                 }
             }  
-            blocks[tt].Fall_Down(1);
+            blocks[tt].Fall_Down(1,Mapp);
             //控制运行速度
             Sleep(500);
         }
