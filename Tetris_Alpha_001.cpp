@@ -195,7 +195,6 @@ class Block{  //方块类
     //析构方块 暂时看来不用析构，vector会自己释放
     ~Block(){
     }
-
 };
 
 int main(){
@@ -207,11 +206,7 @@ int main(){
     while(true){     //外层循环
         Block block1(rand()%7);  //创建新的方块对象
         blocks.push_back(block1);
-        while(true){
-            //控制运行速度
-            Sleep(500);
-            //清除屏幕，以实现整个画面的固定
-            system("cls");  
+        while(true){ 
             //判断是否触底或接触已固定方块
             if(blocks[tt].ifEnd(Mapp) == false)break;
             blocks[tt].Draw(Mapp);
@@ -237,6 +232,10 @@ int main(){
                 }
             }  
             blocks[tt].Fall_Down(1,Mapp);
+            //控制运行速度
+            Sleep(500);
+            //清除屏幕，以实现整个画面的固定
+            system("cls"); 
         }
         tt++;
         int cnt = 0;
