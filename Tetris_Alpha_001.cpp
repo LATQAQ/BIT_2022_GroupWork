@@ -45,40 +45,40 @@ class Block{  //方块类
                 yx.push_back(make_pair(0,5));
             break;
             case shape_R_L:
-                yx.push_back(make_pair(0,4));
-                yx.push_back(make_pair(1,4));
-                yx.push_back(make_pair(2,4));
-                yx.push_back(make_pair(2,3));
+                yx.push_back(make_pair(0,1));
+                yx.push_back(make_pair(1,1));
+                yx.push_back(make_pair(2,1));
+                yx.push_back(make_pair(2,0));
             break;
             case shape_L:
-                yx.push_back(make_pair(0,3));
-                yx.push_back(make_pair(1,3));
-                yx.push_back(make_pair(2,3));
-                yx.push_back(make_pair(2,4));
+                yx.push_back(make_pair(0,0));
+                yx.push_back(make_pair(1,0));
+                yx.push_back(make_pair(2,0));
+                yx.push_back(make_pair(2,1));
             break;
             case shape_I:
-                yx.push_back(make_pair(0,3));
-                yx.push_back(make_pair(1,3));
-                yx.push_back(make_pair(2,3));
-                yx.push_back(make_pair(3,3));
+                yx.push_back(make_pair(0,0));
+                yx.push_back(make_pair(1,0));
+                yx.push_back(make_pair(2,0));
+                yx.push_back(make_pair(3,0));
             break;
             case shape_Z:
-                yx.push_back(make_pair(0,3));
-                yx.push_back(make_pair(0,4));
-                yx.push_back(make_pair(1,4));
-                yx.push_back(make_pair(1,5));
+                yx.push_back(make_pair(0,0));
+                yx.push_back(make_pair(0,1));
+                yx.push_back(make_pair(1,1));
+                yx.push_back(make_pair(1,2));
             break;
             case shape_O:
-                yx.push_back(make_pair(0,3));
-                yx.push_back(make_pair(0,4));
-                yx.push_back(make_pair(1,3));
-                yx.push_back(make_pair(1,4));
+                yx.push_back(make_pair(0,0));
+                yx.push_back(make_pair(0,1));
+                yx.push_back(make_pair(1,0));
+                yx.push_back(make_pair(1,1));
             break;
             case shape_T:
-                yx.push_back(make_pair(0,3));
-                yx.push_back(make_pair(0,4));
-                yx.push_back(make_pair(0,5));
-                yx.push_back(make_pair(1,4));
+                yx.push_back(make_pair(0,0));
+                yx.push_back(make_pair(0,1));
+                yx.push_back(make_pair(0,2));
+                yx.push_back(make_pair(1,1));
             break;
 
         }
@@ -229,7 +229,6 @@ class Block{  //方块类
     //析构方块 暂时看来不用析构，vector会自己释放
     ~Block(){
     }
-
 };
 
 int main(){
