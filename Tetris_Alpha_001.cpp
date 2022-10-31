@@ -3,6 +3,11 @@
 /*
 1.面向对象的程度？
 2.亟需沟通与协作 (●'◡'●)
+3.卡顿、频闪严重
+4. “失败”未实现
+5.下落和左右 要 不用同时
+6.按键的“实时”输入
+7.按空格直接下落
 */
 
 
@@ -24,7 +29,7 @@ using namespace std;
 #define shape_R_Z 5
 #define shape_R_L 6
 
-int row=16,col=15;  //长row宽col
+int row=20,col=15;  //长row宽col
 
 
 class Block{  //方块类
@@ -203,13 +208,14 @@ int main(){
     vector<vector<int>> Mapp(row+10,vector<int>(col+10,0));  //存储地图
     vector<Block> blocks;    //存储多个方块对象
     srand(time(nullptr));    //设置随机数的种子，以时间为种子
+    double start = GetTickCount();
     while(true){     //外层循环
         Block block1(rand()%7);  //创建新的方块对象
         blocks.push_back(block1);
-        while(true){ 
+        while(true){  
             //判断是否触底或接触已固定方块
             if(blocks[tt].ifEnd(Mapp) == false)break;
-            blocks[tt].Draw(Mapp);
+            
             //接收键盘输入
             if(_kbhit()){
                 key = _getch();
@@ -231,11 +237,14 @@ int main(){
                         return 0;
                 }
             }  
+            double time = GetTickCount();
+            if(fmod(time - start,300)==0)
             blocks[tt].Fall_Down(1,Mapp);
-            //控制运行速度
-            Sleep(500);
-            //清除屏幕，以实现整个画面的固定
-            system("cls"); 
+            if(fmod(time - start,10)==0){
+                system("cls");
+                blocks[tt].Draw(Mapp);
+                //清除屏幕，以实现整个画面的固定
+            }
         }
         tt++;
         int cnt = 0;
