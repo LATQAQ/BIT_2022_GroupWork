@@ -183,6 +183,7 @@ class Block{  //方块类
             mp[point.first][point.second]=1;
         } 
     }
+    //判断是否和下方的1接触
     bool Touch(int speed,vector<vector<int>> &mp){
         bool flag=true;
         for(auto &point:yx){
@@ -190,6 +191,33 @@ class Block{  //方块类
         } 
         return flag;
     }
+    //接收键盘输入
+    bool In(vector<vector<int>> &mp){
+        int key = _getch();
+        switch(key)
+        {
+            case 'a':
+                Go_Left(mp);
+                return true;
+                break;
+            case 'd':
+                Go_Right(mp);
+                return true;
+                break;
+            case 's':
+                Fall_Down(3,mp);
+                return true;
+                break;
+            case 'w':
+                Change_dir(mp);
+                return true;
+                break;
+            case 27:    //"esc" 直接结束
+                return false;
+        }
+        return true;
+    }  
+    //判断是否结束
     bool ifEnd(vector<vector<int>> &mp){
         if(LowSpace()==row-1 || (Touch(1,mp) == false)){  
             Accomplished(mp);
@@ -197,6 +225,7 @@ class Block{  //方块类
         }
         else return true;
     }
+
     //析构方块 暂时看来不用析构，vector会自己释放
     ~Block(){
     }
@@ -209,39 +238,28 @@ int main(){
     vector<vector<int>> Mapp(row+10,vector<int>(col+10,0));  //存储地图
     vector<Block> blocks;    //存储多个方块对象
     srand(time(nullptr));    //设置随机数的种子，以时间为种子
-    double start = GetTickCount();
+    double start = GetTickCount();//开始时间
     while(true){     //外层循环
         Block block1(rand()%7);  //创建新的方块对象
         blocks.push_back(block1);
         while(true){  
-            //判断是否触底或接触已固定方块
-            if(blocks[tt].ifEnd(Mapp) == false)break;
-            
-            //接收键盘输入
-            if(_kbhit()){
-                key = _getch();
-                switch(key)
-                {
-                    case 'a':
-                        blocks[tt].Go_Left(Mapp);
-                        break;
-                    case 'd':
-                        blocks[tt].Go_Right(Mapp);
-                        break;
-                    case 's':
-                        blocks[tt].Fall_Down(3,Mapp);
-                        break;
-                    case 'w':
-                        blocks[tt].Change_dir(Mapp);
-                        break;
-                    case 27:    //"esc" 直接结束
-                        return 0;
-                }
-            }  
+            //当前时间
             double time = GetTickCount();
+
+            //判断是否触底或接触已固定方块
+            if(fmod(time - start,300)==0)
+            if(blocks[tt].ifEnd(Mapp) == false)break;
+
+
+            if(_kbhit()){
+                if(blocks[tt].In(Mapp) == false)return 0;
+            }
+            
             if(fmod(time - start,300)==0)
             blocks[tt].Fall_Down(1,Mapp);
-            if(fmod(time - start,10)==0){
+
+
+            if(fmod(time - start,20)==0){
                 system("cls");
                 blocks[tt].Draw(Mapp);
                 //清除屏幕，以实现整个画面的固定
